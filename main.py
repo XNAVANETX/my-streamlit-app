@@ -13,7 +13,7 @@ def parse_groq_stream(stream):
 
 # Streamlit page configuration
 st.set_page_config(
-    page_title="Nike AI",
+    page_title="Field Focus",
     page_icon="🤖",
     layout="centered",
 )
@@ -31,8 +31,8 @@ os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
 # Set default values if keys are missing
 INITIAL_RESPONSE = secrets.get("INITIAL_RESPONSE", "Hello! How can I assist you today?")
-INITIAL_MSG = secrets.get("INITIAL_MSG", "Welcome to the Nike AI Chatbot!")
-CHAT_CONTEXT = secrets.get("CHAT_CONTEXT", "You are a helpful assistant knowledgeable about Nike products and services.")
+INITIAL_MSG = secrets.get("INITIAL_MSG", "Welcome to Field Focus!")
+CHAT_CONTEXT = secrets.get("CHAT_CONTEXT", "You are a helpful assistant knowledgeable about sports gear and equipment.")
 
 client = Groq()
 
@@ -43,23 +43,8 @@ if "chat_history" not in st.session_state:
     ]
 
 # Page title
-st.title("Welcome to the Nike AI Chatbot! 🤓")
-st.caption("Your Personal Assistant for All Things Nike!")
-
-# Detailed introduction
-st.markdown("""
-**Hello! I'm your Nike AI Assistant, here to help you with:**  
-
-1. **Product Information:** Get details on the latest Nike shoes, apparel, and accessories.
-2. **Size Guides:** Need help finding the right fit? I can provide size charts and recommendations.
-3. **Product Availability:** Check if your favorite items are in stock at local stores or online.
-4. **Ordering Help:** Have questions about placing an order or tracking your shipment? I can assist you!
-5. **Nike News:** Stay updated on the latest releases, promotions, and events from Nike.
-6. **Customer Support:** I can guide you through common issues or direct you to the right resources.
-7. **Personalized Recommendations:** Share your preferences, and I'll suggest products just for you!
-
-**Feel free to ask me anything, and let’s elevate your Nike experience together!**  
-""")
+st.title("Welcome to Field Focus! 🤓")
+st.caption("Your Personal Assistant for All Things Sports Gear!")
 
 # Display chat history
 for message in st.session_state.chat_history:
