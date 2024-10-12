@@ -61,8 +61,11 @@ cd Chatbot-Streamlit
    GROQ_API_KEY=your_api_key
    ```
 **Change this to your need**:
+
     INITIAL_RESPONSE="Hello! How can I assist you today?"
+    
     INITIAL_MSG="Welcome to Field Focus!"
+    
     CHAT_CONTEXT="You are a helpful assistant knowledgeable about sports gear and equipment."
     
 ## 🚀 Running the Chatbot
