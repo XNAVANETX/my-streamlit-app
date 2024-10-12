@@ -75,15 +75,6 @@ streamlit run main.py
 
 This will open the application in your default web browser.
 
-
-## 🤝 Contributing
-
-Contributions are more than welcome! If you have ideas for enhancements or new features, please feel free to fork the repository and submit a pull request.
-
-## 📄 License
-
-This project is licensed under the MIT License. For more details, please refer to the [LICENSE](LICENSE) file.
-
 ## 📫 Contact
 
 For any questions or inquiries, feel free to reach out:
