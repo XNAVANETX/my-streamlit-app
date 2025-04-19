@@ -1,22 +1,57 @@
 import os
+import time
+import json
 from dotenv import dotenv_values
 import streamlit as st
 from groq import Groq
-import time
-import json
-
-# ---------------------- Stream Parser ----------------------
-def parse_groq_stream(stream):
-    for chunk in stream:
-        if chunk.choices and chunk.choices[0].delta.content is not None:
-            yield chunk.choices[0].delta.content
 
 # ---------------------- Page Setup ----------------------
+# This MUST be the first Streamlit command
 st.set_page_config(
     page_title="Sniper Systems Chatbot",
     page_icon="💼",
     layout="centered",
 )
+
+# ---------------------- Custom Styling ----------------------
+# Hide Streamlit UI elements for cleaner interface
+st.markdown("""
+<style>
+    /* Hide header with fork button, GitHub icon and menu */
+    header {display: none !important;}
+    
+    /* Hide the GitHub fork button */
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob {
+        display: none !important;
+    }
+    
+    /* Hide 3-dot menu and other header icons */
+    section[data-testid="stSidebar"] {display: none !important;}
+    .css-14xtw13.e8zbici0 {display: none !important;}
+    .css-cio0dv.e1g8pov61 {display: none !important;}
+    div[data-testid="stToolbar"] {display: none !important;}
+    
+    /* Hide footer elements including Streamlit branding and profile */
+    footer {display: none !important;}
+    .css-1lsmgbg.egzxvld0 {display: none !important;}
+    
+    /* Hide "made with Streamlit" */
+    .viewerBadge_link__1S137 {display: none !important;}
+    
+    /* Remove main page padding to maximize chat space */
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 0rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Custom styling for cleaner chat appearance */
+    .stTextInput > div > div > input {
+        border-radius: 20px;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # ---------------------- Load API Key ----------------------
 try:
@@ -76,7 +111,7 @@ INDUSTRY SOLUTIONS:
 - IT & ITES (Information Technology Enabled Services): Maximize productivity and eliminate downtime with our robust IT solutions tailored for tech-driven businesses.
 - AEC (Architecture, Engineering, Construction): From BIM coordination to MEP design and staff augmentation — we empower the AEC industry with smart, tech-enabled solutions.
 - Media & Entertainment: Create stunning 3D films, TV shows, animations, and games with our wide range of creative tools and post-production solutions.
-- AR | VR | XR: Looking to speed up your digital transformation? We’ve got you covered with immersive tech solutions in AR, VR, and XR.
+- AR | VR | XR: Looking to speed up your digital transformation? We've got you covered with immersive tech solutions in AR, VR, and XR.
 - Education & E-Learning: Create stunning 3D films, TV shows, animations, and games with our wide range of creative tools and post-production solutions.
 
 EDUCATIONAL INITIATIVES:
@@ -96,20 +131,32 @@ When assisting users, provide accurate information about Sniper's services, reco
 """
 )
 
+# ---------------------- Initialize Groq Client ----------------------
 client = Groq()
 
-# ---------------------- Session Initialization ----------------------
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = [{"role": "assistant", "content": INITIAL_RESPONSE}]
-if "user_message_count" not in st.session_state:
-    st.session_state.user_message_count = 0
-if "show_user_form" not in st.session_state:
-    st.session_state.show_user_form = False
-if "pending_response" not in st.session_state:
-    st.session_state.pending_response = None
+# ---------------------- Helper Functions ----------------------
+def parse_groq_stream(stream):
+    """Parse the streaming response from Groq API"""
+    for chunk in stream:
+        if chunk.choices and chunk.choices[0].delta.content is not None:
+            yield chunk.choices[0].delta.content
 
-# Function to save user info
+def generate_bot_response(messages):
+    """Generate a response using the Groq LLM API"""
+    try:
+        with st.spinner("Thinking..."):
+            time.sleep(2)
+            stream = client.chat.completions.create(
+                model="llama3-70b-8192",
+                messages=messages,
+                stream=True
+            )
+            return ''.join(parse_groq_stream(stream))
+    except Exception as e:
+        return f"Error: {e}"
+
 def save_user_info(name, company, phone, email):
+    """Save user information to a JSON file"""
     user_data = {
         "name": name,
         "company": company,
@@ -144,21 +191,17 @@ def save_user_info(name, company, phone, email):
         st.session_state.chat_history.append({"role": "assistant", "content": st.session_state.pending_response})
         st.session_state.pending_response = None
 
-# ---------------------- Generate Bot Response ----------------------
-def generate_bot_response(messages):
-    try:
-        with st.spinner("Thinking..."):
-            time.sleep(2)
-            stream = client.chat.completions.create(
-                model="llama3-70b-8192",
-                messages=messages,
-                stream=True
-            )
-            return ''.join(parse_groq_stream(stream))
-    except Exception as e:
-        return f"Error: {e}"
+# ---------------------- Session State Initialization ----------------------
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = [{"role": "assistant", "content": INITIAL_RESPONSE}]
+if "user_message_count" not in st.session_state:
+    st.session_state.user_message_count = 0
+if "show_user_form" not in st.session_state:
+    st.session_state.show_user_form = False
+if "pending_response" not in st.session_state:
+    st.session_state.pending_response = None
 
-# ---------------------- Chat UI ----------------------
+# ---------------------- Main UI ----------------------
 st.title("Welcome to Sniper Systems & Solutions Chatbot")
 st.caption("Your Professional Assistant for IT Solutions and Services")
 
@@ -182,17 +225,18 @@ if st.session_state.show_user_form:
             save_user_info(name, company, phone, email)
             st.rerun()  # Rerun the app to refresh the UI
 
-# ---------------------- User Input ----------------------
+# ---------------------- User Input Handler ----------------------
 user_prompt = st.chat_input("How can I assist you today?", disabled=st.session_state.show_user_form)
 
 if user_prompt:
     st.session_state.user_message_count += 1
 
+    # Display user message
     with st.chat_message("user", avatar="👨🏼‍💻"):
         st.markdown(user_prompt)
     st.session_state.chat_history.append({"role": "user", "content": user_prompt})
 
-    # ---------------------- Generate and Store Response for 2nd Message ----------------------
+    # Check if this is the second message to trigger user info collection
     if st.session_state.user_message_count == 2: 
         # Generate a response to the user's message first
         messages = [
