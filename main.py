@@ -14,44 +14,33 @@ st.set_page_config(
 )
 
 # ---------------------- Custom Styling ----------------------
-# Hide Streamlit UI elements for cleaner interface
+# Hide Streamlit branding and profile elements
 st.markdown("""
 <style>
-    /* Hide header with fork button, GitHub icon and menu */
-    header {display: none !important;}
-    
-    /* Hide the GitHub fork button */
-    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob {
-        display: none !important;
-    }
-    
-    /* Hide 3-dot menu and other header icons */
-    section[data-testid="stSidebar"] {display: none !important;}
-    .css-14xtw13.e8zbici0 {display: none !important;}
-    .css-cio0dv.e1g8pov61 {display: none !important;}
-    div[data-testid="stToolbar"] {display: none !important;}
-    
-    /* Hide footer elements including Streamlit branding and profile */
-    footer {display: none !important;}
-    .css-1lsmgbg.egzxvld0 {display: none !important;}
+    /* Hide footer with Streamlit branding */
+    footer {visibility: hidden !important;}
     
     /* Hide "made with Streamlit" */
-    .viewerBadge_link__1S137 {display: none !important;}
+    #MainMenu {visibility: hidden !important;}
     
-    /* Remove main page padding to maximize chat space */
-    .block-container {
-        padding-top: 1rem;
-        padding-bottom: 0rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+    /* Hide version number */
+    .viewerBadge_container__1QSob {display: none !important;}
     
-    /* Custom styling for cleaner chat appearance */
-    .stTextInput > div > div > input {
-        border-radius: 20px;
+    /* Alternative approaches for different Streamlit versions */
+    .reportview-container .main footer {visibility: hidden !important;}
+    .stApp footer {display: none !important;}
+    
+    /* Hide profile/account elements in footer */
+    .css-1lsmgbg.egzxvld0 {visibility: hidden !important;}
+    
+    /* This targets the specific footer container in newer versions */
+    section[data-testid="stFooter"] {
+        visibility: hidden !important;
+        display: none !important;
     }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ---------------------- Load API Key ----------------------
 if os.path.exists(".env"):
@@ -203,13 +192,9 @@ if "pending_response" not in st.session_state:
     st.session_state.pending_response = None
 
 # ---------------------- Main UI ----------------------
+
+
 st.info("Welcome to Sniper Chatbot")
-
-
-
-
-
-
 # Display chat history
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"], avatar='🤖' if message["role"] == "assistant" else "👨🏼‍💻"):
