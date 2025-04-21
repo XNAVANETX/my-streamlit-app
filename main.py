@@ -1,9 +1,12 @@
 import os
 import time
-import json
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from dotenv import dotenv_values
 import streamlit as st
 from groq import Groq
+from datetime import datetime
 
 # ---------------------- Page Setup ----------------------
 # This MUST be the first Streamlit command
@@ -59,9 +62,15 @@ if os.path.exists(".env"):
     # Local development
     secrets = dotenv_values(".env")
     GROQ_API_KEY = secrets.get("GROQ_API_KEY")
+    EMAIL_ADDRESS = secrets.get("EMAIL_ADDRESS")
+    EMAIL_PASSWORD = secrets.get("EMAIL_PASSWORD")
+    RECIPIENT_EMAIL = secrets.get("RECIPIENT_EMAIL")
 else:
     # Streamlit Cloud
     GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+    EMAIL_ADDRESS = st.secrets["EMAIL_ADDRESS"]
+    EMAIL_PASSWORD = st.secrets["EMAIL_PASSWORD"]
+    RECIPIENT_EMAIL = st.secrets["RECIPIENT_EMAIL"]
 
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
@@ -157,41 +166,68 @@ def generate_bot_response(messages):
     except Exception as e:
         return f"Error: {e}"
 
-def save_user_info(name, company, phone, email):
-    """Save user information to a JSON file"""
-    user_data = {
-        "name": name,
-        "company": company,
-        "phone": phone,
-        "email": email
-    }
-    file_path = "user_info.json"
-
-    if os.path.exists(file_path):
-        try:
-            with open(file_path, "r") as f:
-                data = json.load(f)
-        except json.JSONDecodeError:
-            data = []
+def send_email_notification(name, company, phone, email):
+    """Send user information via email"""
+    try:
+        # Create message
+        msg = MIMEMultipart()
+        msg['From'] = EMAIL_ADDRESS
+        msg['To'] = RECIPIENT_EMAIL
+        msg['Subject'] = f"New Lead from Chatbot: {name} - {company}"
         
-        data.append(user_data)
-        with open(file_path, "w") as f:
-            json.dump(data, f, indent=4)
+        # Get current timestamp
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Create the email body
+        body = f"""
+        New Lead Information:
+        ---------------------
+        Date/Time: {timestamp}
+        Name: {name}
+        Company: {company}
+        Phone: {phone}
+        Email: {email}
+        
+        This is an automated notification from your Sniper Systems Chatbot.
+        """
+        
+        msg.attach(MIMEText(body, 'plain'))
+        
+        # Connect to Gmail's SMTP server
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        
+        # Login to email account
+        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        
+        # Send email
+        server.send_message(msg)
+        server.quit()
+        
+        return True
+    except Exception as e:
+        st.error(f"Error sending email: {str(e)}")
+        return False
+
+def save_user_info(name, company, phone, email):
+    """Save user information by sending an email notification"""
+    if send_email_notification(name, company, phone, email):
+        # Update session state
+        st.session_state.user_info_collected = True
+        st.session_state.show_user_form = False
+        
+        # Add personalized confirmation message to chat history
+        confirmation_msg = f"Thanks {name} for sharing your details! Let's continue with your inquiry."
+        st.session_state.chat_history.append({"role": "assistant", "content": confirmation_msg})
+        
+        # If we have a pending response from the bot, add it now
+        if st.session_state.pending_response:
+            st.session_state.chat_history.append({"role": "assistant", "content": st.session_state.pending_response})
+            st.session_state.pending_response = None
+            
+        return True
     else:
-        with open(file_path, "w") as f:
-            json.dump([user_data], f, indent=4)
-    
-    st.session_state.user_info_collected = True
-    st.session_state.show_user_form = False
-    
-    # Add personalized confirmation message to chat history
-    confirmation_msg = f"Thanks {name} for sharing your details! Let's continue with your inquiry."
-    st.session_state.chat_history.append({"role": "assistant", "content": confirmation_msg})
-    
-    # If we have a pending response from the bot, add it now
-    if st.session_state.pending_response:
-        st.session_state.chat_history.append({"role": "assistant", "content": st.session_state.pending_response})
-        st.session_state.pending_response = None
+        return False
 
 # ---------------------- Session State Initialization ----------------------
 if "chat_history" not in st.session_state:
@@ -204,9 +240,8 @@ if "pending_response" not in st.session_state:
     st.session_state.pending_response = None
 
 # ---------------------- Main UI ----------------------
-
-
 st.info("Welcome to Sniper Chatbot")
+
 # Display chat history
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"], avatar='🤖' if message["role"] == "assistant" else "👨🏼‍💻"):
@@ -224,8 +259,8 @@ if st.session_state.show_user_form:
         submitted = st.form_submit_button("Submit")
 
         if submitted:
-            save_user_info(name, company, phone, email)
-            st.rerun()  # Rerun the app to refresh the UI
+            if save_user_info(name, company, phone, email):
+                st.rerun()  # Rerun the app to refresh the UI
 
 # ---------------------- User Input Handler ----------------------
 user_prompt = st.chat_input("How can I assist you today?", disabled=st.session_state.show_user_form)
