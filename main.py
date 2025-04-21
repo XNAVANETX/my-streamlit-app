@@ -14,29 +14,41 @@ st.set_page_config(
 )
 
 # ---------------------- Custom Styling ----------------------
-# Hide Streamlit branding and profile elements
+# Hide Streamlit UI elements for cleaner interface
 st.markdown("""
 <style>
-    /* Hide footer with Streamlit branding */
-    footer {visibility: hidden !important;}
-    
-    /* Hide "made with Streamlit" */
-    #MainMenu {visibility: hidden !important;}
-    
-    /* Hide version number */
-    .viewerBadge_container__1QSob {display: none !important;}
-    
-    /* Alternative approaches for different Streamlit versions */
-    .reportview-container .main footer {visibility: hidden !important;}
-    .stApp footer {display: none !important;}
-    
-    /* Hide profile/account elements in footer */
-    .css-1lsmgbg.egzxvld0 {visibility: hidden !important;}
-    
-    /* This targets the specific footer container in newer versions */
-    section[data-testid="stFooter"] {
-        visibility: hidden !important;
+    /* Hide header with fork button, GitHub icon and menu */
+    header {display: none !important;}
+
+    /* Hide the GitHub fork button */
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob {
         display: none !important;
+    }
+
+    /* Hide 3-dot menu and other header icons */
+    section[data-testid="stSidebar"] {display: none !important;}
+    .css-14xtw13.e8zbici0 {display: none !important;}
+    .css-cio0dv.e1g8pov61 {display: none !important;}
+    div[data-testid="stToolbar"] {display: none !important;}
+
+    /* Hide footer elements including Streamlit branding and profile */
+    footer {display: none !important;}
+    .css-1lsmgbg.egzxvld0 {display: none !important;}
+
+    /* Hide "made with Streamlit" */
+    .viewerBadge_link__1S137 {display: none !important;}
+
+    /* Remove main page padding to maximize chat space */
+    .block-container {
+        padding-top: 1rem;
+        padding-bottom: 0rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Custom styling for cleaner chat appearance */
+    .stTextInput > div > div > input {
+        border-radius: 20px;
     }
 </style>
 """, unsafe_allow_html=True)
