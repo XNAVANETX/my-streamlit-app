@@ -203,7 +203,7 @@ if "pending_response" not in st.session_state:
     st.session_state.pending_response = None
 
 # ---------------------- Main UI ----------------------
-st.warning("Welcome to Sniper Chatbot")
+st.info("Welcome to Sniper Chatbot")
 
 
 
