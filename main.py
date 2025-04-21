@@ -54,12 +54,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ---------------------- Load API Key ----------------------
-try:
+if os.path.exists(".env"):
+    # Local development
     secrets = dotenv_values(".env")
-    GROQ_API_KEY = secrets["GROQ_API_KEY"]
-except KeyError:
-    secrets = st.secrets
-    GROQ_API_KEY = secrets["GROQ_API_KEY"]
+    GROQ_API_KEY = secrets.get("GROQ_API_KEY")
+else:
+    # Streamlit Cloud
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
