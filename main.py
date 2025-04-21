@@ -203,8 +203,12 @@ if "pending_response" not in st.session_state:
     st.session_state.pending_response = None
 
 # ---------------------- Main UI ----------------------
-st.title("Welcome to Sniper Systems & Solutions Chatbot")
-st.caption("Your Professional Assistant for IT Solutions and Services")
+st.warning("Welcome to Sniper Chatbot")
+
+
+
+
+
 
 # Display chat history
 for message in st.session_state.chat_history:
