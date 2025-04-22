@@ -1,6 +1,6 @@
 [theme]
 base = "dark"
-primaryColor = "#FF5C8D"            # Vibrant pink
+primaryColor = "#e31922"            # Vibrant pink
 backgroundColor = "#0F1419"         # Deep blue-black
 secondaryBackgroundColor = "#1C2128"
 textColor = "#F2F2F2"
