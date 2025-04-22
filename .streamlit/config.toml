@@ -1,14 +1,9 @@
 [theme]
-# Base Theme
 base = "dark"
-backgroundColor = "#0F1419"         # Dark base with blue-black tone
-secondaryBackgroundColor = "#1C2128"  # Slightly elevated cards/sections
-
-# Brand Colors - Now in Pink!
-primaryColor = "#FF5C8D"            # Vibrant rose pink for buttons/highlights
-secondaryColor = "#FFB6C1"          # Soft blush pink for hover/accents
-
-# Text & Typography
-textColor = "#F2F2F2"               # Soft white text
+primaryColor = "#FF5C8D"            # Vibrant pink
+backgroundColor = "#0F1419"         # Deep blue-black
+secondaryBackgroundColor = "#1C2128"
+textColor = "#F2F2F2"
 font = "sans serif"
+
 
