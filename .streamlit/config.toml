@@ -1,13 +1,14 @@
 [theme]
-# Base
-# Base
+# Base Theme
 base = "dark"
-backgroundColor = "#0F1419"       # Blue-black for a corporate tech feel
-secondaryBackgroundColor = "#1C2128"  # Slightly blue-tinted elevation
+backgroundColor = "#0F1419"         # Dark base with blue-black tone
+secondaryBackgroundColor = "#1C2128"  # Slightly elevated cards/sections
 
-# Brand Colors
-primaryColor = "#00D1B2"         # More teal-leaning primary for professionalism
+# Brand Colors - Now in Pink!
+primaryColor = "#FF5C8D"            # Vibrant rose pink for buttons/highlights
+secondaryColor = "#FFB6C1"          # Soft blush pink for hover/accents
 
 # Text & Typography
-textColor = "#E6E6E6"            # Slightly off-white for less harshness
+textColor = "#F2F2F2"               # Soft white text
 font = "sans serif"
+
