@@ -14,7 +14,6 @@ st.set_page_config(
     page_title="Sniper Systems Chatbot",
     page_icon="💼",
     layout="centered",
-    initial_sidebar_state="expanded", theme="dark"
 )
 
 # ---------------------- Custom Styling ----------------------
