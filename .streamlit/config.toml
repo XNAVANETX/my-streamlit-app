@@ -1,18 +1,14 @@
-# Base
-base = "dark"
-backgroundColor = "#0F1419"       # Blue-black for a corporate tech feel
-secondaryBackgroundColor = "#1C2128"  # Slightly blue-tinted elevation
+[theme]
+base="dark"
 
-# Brand Colors
-primaryColor = "#00D1B2"         # More teal-leaning primary for professionalism
-secondaryColor = "#E6C200"       # Sophisticated gold tone
+# Brand & Accent Colors
+primaryColor = "#00FFD1"         # Neon aqua for buttons and highlights
+backgroundColor = "#0D0D0D"      # Rich black background
+secondaryBackgroundColor = "#1A1A1A"  # Slightly lighter for cards/containers
 
-# Text & Typography
-textColor = "#E6E6E6"            # Slightly off-white for less harshness
-font = "sans serif"
-headerFont = "sans serif"        # Clean headers
+# Text Colors
+textColor = "#EAEAEA"            # Soft white for main text
+font = "sans serif"              # Options: "sans serif", "serif", "monospace"
 
-# Additional Touches
-borderRadius = "0.375rem"        # Balanced corner rounding
-shadowSize = "lg"                # Pronounced shadows for depth
-spacing = "md"                   # Comfortable spacing between elements
+# Optional: Make widgets pop more
+secondaryColor = "#FFD700"       # Gold for secondary buttons/accents
