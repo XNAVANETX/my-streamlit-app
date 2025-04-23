@@ -242,7 +242,7 @@ if "pending_response" not in st.session_state:
 
 # ---------------------- Display Chat History ----------------------
 for message in st.session_state.chat_history:
-    with st.chat_message(message["role"], avatar='🤖' if message["role"] == "assistant" else "👨🏼‍💻"):
+    with st.chat_message(message["role"], avatar='https://raw.githubusercontent.com/sahirmaharaj/exifa/main/img/assistant.gif' if message["role"] == "assistant" else "👨🏼‍💻"):
         st.markdown(message["content"])
 
 # ---------------------- User Info Form ----------------------
@@ -301,12 +301,12 @@ if user_prompt:
             st.rerun()
         else:
             # User already submitted the form previously, just show the response
-            with st.chat_message("assistant", avatar='🤖'):
+            with st.chat_message("assistant", avatar='https://raw.githubusercontent.com/sahirmaharaj/exifa/main/img/assistant.gif'):
                 st.markdown(response)
                 st.session_state.chat_history.append({"role": "assistant", "content": response})
     else:
         # Normal message flow for other messages
-        with st.chat_message("assistant", avatar='🤖'):
+        with st.chat_message("assistant", avatar='https://raw.githubusercontent.com/sahirmaharaj/exifa/main/img/assistant.gif'):
             messages = [
                 {"role": "system", "content": CHAT_CONTEXT},
                 {"role": "assistant", "content": INITIAL_MSG},
