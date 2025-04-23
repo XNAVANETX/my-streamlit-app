@@ -14,7 +14,7 @@ import streamlit.components.v1 as components
 # This MUST be the first Streamlit command
 st.set_page_config(
     page_title="Sniper Systems Chatbot",
-    page_icon="💼",
+    page_icon="🌐",
     layout="centered",
 )
 
