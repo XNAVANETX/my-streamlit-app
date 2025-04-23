@@ -7,6 +7,7 @@ from dotenv import dotenv_values
 import streamlit as st
 from groq import Groq
 from datetime import datetime
+import streamlit.components.v1 as components
 
 
 # ---------------------- Page Setup ----------------------
@@ -18,41 +19,16 @@ st.set_page_config(
 )
 
 # ---------------------- Particles.js Integration ----------------------
-# Add particles.js animation as HTML component
-particles_js = """<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Particles.js</title>
-  <style>
-  #particles-js {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    z-index: -1; /* Send the animation to the back */
-    background-color: #0e1117; /* Match Streamlit's default dark background */
-  }
-  .content {
-    position: relative;
-    z-index: 1;
-    color: white;
-  }
-  </style>
-</head>
-<body>
-  <div id="particles-js"></div>
-  <div class="content">
-    <!-- Placeholder for Streamlit content -->
-  </div>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script>
+# Add particles.js animation
+particles_html = """
+<div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
     particlesJS("particles-js", {
       "particles": {
         "number": {
-          "value": 300,
+          "value": 80,
           "density": {
             "enable": true,
             "value_area": 800
@@ -67,14 +43,6 @@ particles_js = """<!DOCTYPE html>
             "width": 0,
             "color": "#000000"
           },
-          "polygon": {
-            "nb_sides": 5
-          },
-          "image": {
-            "src": "img/github.svg",
-            "width": 100,
-            "height": 100
-          }
         },
         "opacity": {
           "value": 0.5,
@@ -82,12 +50,12 @@ particles_js = """<!DOCTYPE html>
           "anim": {
             "enable": false,
             "speed": 1,
-            "opacity_min": 0.2,
+            "opacity_min": 0.1,
             "sync": false
           }
         },
         "size": {
-          "value": 2,
+          "value": 3,
           "random": true,
           "anim": {
             "enable": false,
@@ -98,19 +66,19 @@ particles_js = """<!DOCTYPE html>
         },
         "line_linked": {
           "enable": true,
-          "distance": 100,
+          "distance": 150,
           "color": "#ffffff",
-          "opacity": 0.22,
+          "opacity": 0.4,
           "width": 1
         },
         "move": {
           "enable": true,
-          "speed": 0.2,
+          "speed": 2,
           "direction": "none",
           "random": false,
           "straight": false,
           "out_mode": "out",
-          "bounce": true,
+          "bounce": false,
           "attract": {
             "enable": false,
             "rotateX": 600,
@@ -127,111 +95,114 @@ particles_js = """<!DOCTYPE html>
           },
           "onclick": {
             "enable": true,
-            "mode": "repulse"
+            "mode": "push"
           },
           "resize": true
         },
         "modes": {
           "grab": {
-            "distance": 100,
+            "distance": 140,
             "line_linked": {
               "opacity": 1
             }
           },
           "bubble": {
             "distance": 400,
-            "size": 2,
+            "size": 40,
             "duration": 2,
-            "opacity": 0.5,
-            "speed": 1
+            "opacity": 8,
+            "speed": 3
           },
           "repulse": {
             "distance": 200,
             "duration": 0.4
           },
           "push": {
-            "particles_nb": 2
+            "particles_nb": 4
           },
           "remove": {
-            "particles_nb": 3
+            "particles_nb": 2
           }
         }
       },
       "retina_detect": true
     });
-  </script>
-</body>
-</html>
+});
+</script>
 """
 
-# Inject the particles.js HTML via an iframe to bypass Streamlit's default sanitization
-st.components.html(particles_js, height=0)
+# Use Streamlit components to inject the HTML
+components.html(particles_html, height=0)
 
-# ---------------------- Custom Styling ----------------------
-# Hide Streamlit UI elements for cleaner interface
+# ---------------------- Apply custom CSS with background for particles ----------------------
 st.markdown("""
 <style>
-    /* Hide header with fork button, GitHub icon and menu */
-    header {display: none !important;}
-
-    /* Hide the GitHub fork button */
-    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob {
-        display: none !important;
+    /* Set background for particles */
+    body {
+        background-color: #0e1117 !important;
     }
-
-    /* Hide 3-dot menu and other header icons */
+    
+    /* Hide Streamlit UI elements */
+    header {display: none !important;}
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob {display: none !important;}
     section[data-testid="stSidebar"] {display: none !important;}
     .css-14xtw13.e8zbici0 {display: none !important;}
     .css-cio0dv.e1g8pov61 {display: none !important;}
     div[data-testid="stToolbar"] {display: none !important;}
-
-    /* Hide footer elements including Streamlit branding and profile */
     footer {display: none !important;}
     .css-1lsmgbg.egzxvld0 {display: none !important;}
-
-    /* Hide "made with Streamlit" */
     .viewerBadge_link__1S137 {display: none !important;}
 
-    /* Remove main page padding to maximize chat space */
+    /* Enhance chat UI */
     .block-container {
         padding-top: 1rem;
         padding-bottom: 0rem;
         padding-left: 1rem;
         padding-right: 1rem;
+        max-width: 800px !important;
     }
 
-    /* Custom styling for cleaner chat appearance */
+    /* Custom styling for chat */
     .stTextInput > div > div > input {
         border-radius: 20px;
     }
     
-    /* Enhance contrast for better readability over particles */
+    /* Make chat messages more visible against particles */
     .stChatMessage {
-        background-color: rgba(17, 25, 40, 0.75) !important;
-        border-radius: 15px !important;
-        padding: 10px !important;
-        margin-bottom: 10px !important;
-        backdrop-filter: blur(10px) !important;
+        background-color: rgba(36, 39, 52, 0.85) !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        margin-bottom: 12px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
     }
     
-    /* Make the chat input stand out */
-    .stChatInputContainer {
-        background-color: rgba(30, 41, 59, 0.7) !important;
-        border-radius: 20px !important;
-        padding: 5px 15px !important;
-        backdrop-filter: blur(5px) !important;
+    /* Style user messages differently */
+    .stChatMessage[data-testid="stChatMessage"] > div:first-child {
+        background-color: rgba(55, 65, 81, 0.9) !important;
     }
     
-    /* Style info boxes to match theme */
-    .stAlert {
-        background-color: rgba(28, 63, 170, 0.15) !important;
-        border-color: rgba(28, 63, 170, 0.4) !important;
-        color: white !important;
-        backdrop-filter: blur(5px) !important;
+    /* Custom form styling */
+    .stForm {
+        background-color: rgba(30, 41, 59, 0.85) !important;
+        padding: 20px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    /* Custom header */
+    .custom-header {
+        text-align: center;
+        margin-bottom: 20px;
+        color: white;
+        text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        font-size: 32px;
+        font-weight: bold;
     }
 </style>
 """, unsafe_allow_html=True)
 
+# ---------------------- Custom Header ----------------------
+st.markdown('<div class="custom-header">Sniper Systems AI Assistant</div>', unsafe_allow_html=True)
 
 # ---------------------- Load API Key ----------------------
 if os.path.exists(".env"):
@@ -415,22 +386,23 @@ if "show_user_form" not in st.session_state:
 if "pending_response" not in st.session_state:
     st.session_state.pending_response = None
 
-# ---------------------- Main UI ----------------------
-st.markdown("""
-<div style="text-align: center; margin-bottom: 20px;">
-    <h1 style="color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5);">Sniper Systems AI Assistant</h1>
-</div>
-""", unsafe_allow_html=True)
-
-# Display chat history
+# ---------------------- Display Chat History ----------------------
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"], avatar='🤖' if message["role"] == "assistant" else "👨🏼‍💻"):
         st.markdown(message["content"])
 
 # ---------------------- User Info Form ----------------------
 if st.session_state.show_user_form:
+    st.markdown("""
+    <div style="background-color: rgba(30, 41, 59, 0.85); 
+                padding: 20px; 
+                border-radius: 10px; 
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <h3 style="color: white; margin-bottom: 15px;">Let's get to know you better:</h3>
+    </div>
+    """, unsafe_allow_html=True)
+    
     with st.form("user_info_form"):
-        st.subheader("Let's get to know you better:")
         col1, col2 = st.columns(2)
         with col1:
             name = st.text_input("Your Name")
