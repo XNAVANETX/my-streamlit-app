@@ -17,6 +17,156 @@ st.set_page_config(
     layout="centered",
 )
 
+# ---------------------- Particles.js Integration ----------------------
+# Add particles.js animation as HTML component
+particles_js = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Particles.js</title>
+  <style>
+  #particles-js {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Send the animation to the back */
+    background-color: #0e1117; /* Match Streamlit's default dark background */
+  }
+  .content {
+    position: relative;
+    z-index: 1;
+    color: white;
+  }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="content">
+    <!-- Placeholder for Streamlit content -->
+  </div>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 300,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": {
+          "value": "#ffffff"
+        },
+        "shape": {
+          "type": "circle",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          },
+          "image": {
+            "src": "img/github.svg",
+            "width": 100,
+            "height": 100
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": {
+            "enable": false,
+            "speed": 1,
+            "opacity_min": 0.2,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 2,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 40,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 100,
+          "color": "#ffffff",
+          "opacity": 0.22,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 0.2,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": true,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "repulse"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 100,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "bubble": {
+            "distance": 400,
+            "size": 2,
+            "duration": 2,
+            "opacity": 0.5,
+            "speed": 1
+          },
+          "repulse": {
+            "distance": 200,
+            "duration": 0.4
+          },
+          "push": {
+            "particles_nb": 2
+          },
+          "remove": {
+            "particles_nb": 3
+          }
+        }
+      },
+      "retina_detect": true
+    });
+  </script>
+</body>
+</html>
+"""
+
+# Inject the particles.js HTML via an iframe to bypass Streamlit's default sanitization
+st.components.html(particles_js, height=0)
+
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
 st.markdown("""
@@ -53,6 +203,31 @@ st.markdown("""
     /* Custom styling for cleaner chat appearance */
     .stTextInput > div > div > input {
         border-radius: 20px;
+    }
+    
+    /* Enhance contrast for better readability over particles */
+    .stChatMessage {
+        background-color: rgba(17, 25, 40, 0.75) !important;
+        border-radius: 15px !important;
+        padding: 10px !important;
+        margin-bottom: 10px !important;
+        backdrop-filter: blur(10px) !important;
+    }
+    
+    /* Make the chat input stand out */
+    .stChatInputContainer {
+        background-color: rgba(30, 41, 59, 0.7) !important;
+        border-radius: 20px !important;
+        padding: 5px 15px !important;
+        backdrop-filter: blur(5px) !important;
+    }
+    
+    /* Style info boxes to match theme */
+    .stAlert {
+        background-color: rgba(28, 63, 170, 0.15) !important;
+        border-color: rgba(28, 63, 170, 0.4) !important;
+        color: white !important;
+        backdrop-filter: blur(5px) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -241,7 +416,11 @@ if "pending_response" not in st.session_state:
     st.session_state.pending_response = None
 
 # ---------------------- Main UI ----------------------
-st.info("Welcome to Sniper Chatbot")
+st.markdown("""
+<div style="text-align: center; margin-bottom: 20px;">
+    <h1 style="color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5);">Sniper Systems AI Assistant</h1>
+</div>
+""", unsafe_allow_html=True)
 
 # Display chat history
 for message in st.session_state.chat_history:
@@ -252,10 +431,13 @@ for message in st.session_state.chat_history:
 if st.session_state.show_user_form:
     with st.form("user_info_form"):
         st.subheader("Let's get to know you better:")
-        name = st.text_input("Your Name")
-        company = st.text_input("Company Name")
-        phone = st.text_input("Phone Number")
-        email = st.text_input("Email Address")
+        col1, col2 = st.columns(2)
+        with col1:
+            name = st.text_input("Your Name")
+            company = st.text_input("Company Name")
+        with col2:
+            phone = st.text_input("Phone Number")
+            email = st.text_input("Email Address")
 
         submitted = st.form_submit_button("Submit")
 
