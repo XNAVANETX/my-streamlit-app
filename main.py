@@ -18,191 +18,45 @@ st.set_page_config(
     layout="centered",
 )
 
-# ---------------------- Particles.js Integration ----------------------
-# Add particles.js animation
-particles_html = """
-<div id="particles-js" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></div>
-<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    particlesJS("particles-js", {
-      "particles": {
-        "number": {
-          "value": 80,
-          "density": {
-            "enable": true,
-            "value_area": 800
-          }
-        },
-        "color": {
-          "value": "#ffffff"
-        },
-        "shape": {
-          "type": "circle",
-          "stroke": {
-            "width": 0,
-            "color": "#000000"
-          },
-        },
-        "opacity": {
-          "value": 0.5,
-          "random": false,
-          "anim": {
-            "enable": false,
-            "speed": 1,
-            "opacity_min": 0.1,
-            "sync": false
-          }
-        },
-        "size": {
-          "value": 3,
-          "random": true,
-          "anim": {
-            "enable": false,
-            "speed": 40,
-            "size_min": 0.1,
-            "sync": false
-          }
-        },
-        "line_linked": {
-          "enable": true,
-          "distance": 150,
-          "color": "#ffffff",
-          "opacity": 0.4,
-          "width": 1
-        },
-        "move": {
-          "enable": true,
-          "speed": 2,
-          "direction": "none",
-          "random": false,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": false,
-          "attract": {
-            "enable": false,
-            "rotateX": 600,
-            "rotateY": 1200
-          }
-        }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "grab"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "push"
-          },
-          "resize": true
-        },
-        "modes": {
-          "grab": {
-            "distance": 140,
-            "line_linked": {
-              "opacity": 1
-            }
-          },
-          "bubble": {
-            "distance": 400,
-            "size": 40,
-            "duration": 2,
-            "opacity": 8,
-            "speed": 3
-          },
-          "repulse": {
-            "distance": 200,
-            "duration": 0.4
-          },
-          "push": {
-            "particles_nb": 4
-          },
-          "remove": {
-            "particles_nb": 2
-          }
-        }
-      },
-      "retina_detect": true
-    });
-});
-</script>
-"""
-
-# Use Streamlit components to inject the HTML
-components.html(particles_html, height=0)
-
-# ---------------------- Apply custom CSS with background for particles ----------------------
+# ---------------------- Custom Styling ----------------------
+# Hide Streamlit UI elements for cleaner interface
 st.markdown("""
 <style>
-    /* Set background for particles */
-    body {
-        background-color: #0e1117 !important;
-    }
-    
-    /* Hide Streamlit UI elements */
+    /* Hide header with fork button, GitHub icon and menu */
     header {display: none !important;}
-    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob {display: none !important;}
+
+    /* Hide the GitHub fork button */
+    .css-1jc7ptx, .e1ewe7hr3, .viewerBadge_container__1QSob {
+        display: none !important;
+    }
+
+    /* Hide 3-dot menu and other header icons */
     section[data-testid="stSidebar"] {display: none !important;}
     .css-14xtw13.e8zbici0 {display: none !important;}
     .css-cio0dv.e1g8pov61 {display: none !important;}
     div[data-testid="stToolbar"] {display: none !important;}
+
+    /* Hide footer elements including Streamlit branding and profile */
     footer {display: none !important;}
     .css-1lsmgbg.egzxvld0 {display: none !important;}
+
+    /* Hide "made with Streamlit" */
     .viewerBadge_link__1S137 {display: none !important;}
 
-    /* Enhance chat UI */
+    /* Remove main page padding to maximize chat space */
     .block-container {
         padding-top: 1rem;
         padding-bottom: 0rem;
         padding-left: 1rem;
         padding-right: 1rem;
-        max-width: 800px !important;
     }
 
-    /* Custom styling for chat */
+    /* Custom styling for cleaner chat appearance */
     .stTextInput > div > div > input {
         border-radius: 20px;
     }
-    
-    /* Make chat messages more visible against particles */
-    .stChatMessage {
-        background-color: rgba(36, 39, 52, 0.85) !important;
-        border-radius: 12px !important;
-        padding: 12px !important;
-        margin-bottom: 12px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-    }
-    
-    /* Style user messages differently */
-    .stChatMessage[data-testid="stChatMessage"] > div:first-child {
-        background-color: rgba(55, 65, 81, 0.9) !important;
-    }
-    
-    /* Custom form styling */
-    .stForm {
-        background-color: rgba(30, 41, 59, 0.85) !important;
-        padding: 20px !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-    }
-    
-    /* Custom header */
-    .custom-header {
-        text-align: center;
-        margin-bottom: 20px;
-        color: white;
-        text-shadow: 0 0 10px rgba(255,255,255,0.5);
-        font-size: 32px;
-        font-weight: bold;
-    }
 </style>
 """, unsafe_allow_html=True)
-
-# ---------------------- Custom Header ----------------------
-st.markdown('<div class="custom-header">Sniper Systems AI Assistant</div>', unsafe_allow_html=True)
 
 # ---------------------- Load API Key ----------------------
 if os.path.exists(".env"):
