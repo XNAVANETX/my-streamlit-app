@@ -17,16 +17,19 @@ st.set_page_config(
     page_icon="💼",
     layout="centered",
 )
-# Load Lottie from URL
+
+# Load Lottie animation
 def load_lottieurl(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
+    try:
+        r = requests.get(url)
+        if r.status_code != 200:
+            return None
+        return r.json()
+    except Exception as e:
+        st.error(f"Error loading animation: {e}")
         return None
-    return r.json()
 
-animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
-
-# Clean layout styling
+# Custom CSS for layout
 st.markdown("""
     <style>
         .block-container {
@@ -37,22 +40,44 @@ st.markdown("""
             padding-top: 0rem !important;
         }
         footer {visibility: hidden;}
+        
+        /* Add responsive design for iframe */
+        @media (max-width: 768px) {
+            .stColumns {
+                flex-direction: column;
+            }
+        }
     </style>
 """, unsafe_allow_html=True)
 
-# Layout: Lottie (left), Error message (right)
-col1, col2 = st.columns([2, 1])
-
-with col1:
-    st_lottie(animation, speed=0.99, quality='high', height=100, width=100)
-
-with col2:
-    # Display the error message
-    st.error("Welcome to Sniper Chatbot")
-
-    st.markdown("""
+try:
+    # Load animation first to prevent errors
+    animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
+    
+    # Create columns with error handling
+    try:
+        col1, col2 = st.columns([1, 2])
         
-    """, unsafe_allow_html=True)
+        # Handle animation in first column
+        with col1:
+            if animation:
+                st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
+            else:
+                st.write("Animation could not be loaded")
+        
+        # Handle content in second column
+        with col2:
+            st.error("Welcome to Sniper Chatbot")
+    
+    except Exception as e:
+        # Fallback to non-column layout if columns fail
+        st.error(f"Welcome to Sniper Chatbot")
+        if animation:
+            st_lottie(animation, speed=0.99, quality='medium', height=150, width=150)
+
+except Exception as e:
+    st.error(f"Welcome to Sniper Chatbot")
+    st.write("Could not load animation")
 
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
