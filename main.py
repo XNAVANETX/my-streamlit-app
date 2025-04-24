@@ -64,10 +64,10 @@ st.markdown("""
 
     /* Remove main page padding to maximize chat space */
     .block-container {
-        padding-top: 1rem;
+        padding-top: 0rem;
         padding-bottom: 0rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-left: 0rem;
+        padding-right: 0rem;
     }
 
     /* Custom styling for cleaner chat appearance */
