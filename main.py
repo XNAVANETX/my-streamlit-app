@@ -27,24 +27,39 @@ def load_lottieurl(url: str):
 # ---------------------- Main UI ----------------------
 st.info("Welcome to Sniper Chatbot")
 
+import streamlit as st
+from streamlit_lottie import st_lottie
+import requests
+
+# Load Lottie animation
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
+
 animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
 
-# Inject CSS to center absolutely
+# Remove padding/margin globally
 st.markdown("""
     <style>
-        .center-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 0vh;
+        .block-container {
+            padding-top: 0rem !important;
+            padding-bottom: 0rem !important;
         }
+        .main {
+            padding-top: 0rem !important;
+        }
+        footer {visibility: hidden;}
     </style>
-    <div class="center-container">
+    <div style='text-align: center; margin-top: -20px;'>
 """, unsafe_allow_html=True)
 
+# Lottie animation
 st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
