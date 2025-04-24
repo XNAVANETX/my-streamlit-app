@@ -7,17 +7,34 @@ from dotenv import dotenv_values
 import streamlit as st
 from groq import Groq
 from datetime import datetime
-import streamlit.components.v1 as components
-
+import requests
+from streamlit_lottie import st_lottie
 
 # ---------------------- Page Setup ----------------------
 # This MUST be the first Streamlit command
 st.set_page_config(
     page_title="Sniper Systems Chatbot",
-    page_icon="🌐",
+    page_icon="💼",
     layout="centered",
 )
+# Load Lottie from URL
+def load_lottieurl(url: str):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
 
+# ---------------------- Main UI ----------------------
+st.info("Welcome to Sniper Chatbot")
+
+# Animation URL
+animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
+
+# Equal width columns for perfect center
+col1, col2, col3 = st.columns([1, 1, 1])
+
+with col2:
+    st_lottie(animation, speed=0.99, quality='high', height=150, width=150)
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
 st.markdown("""
