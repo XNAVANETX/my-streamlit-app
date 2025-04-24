@@ -25,16 +25,20 @@ def load_lottieurl(url: str):
     return r.json()
 
 # ---------------------- Main UI ----------------------
-st.error("Welcome to Sniper Chatbot")
+st.info("Welcome to Sniper Chatbot")
 
 # Animation URL
 animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
 
-# Equal width columns for perfect center
-col1, col2, col3 = st.columns([1, 1, 1])
+# Add custom HTML + CSS to center content inside iframe
+st.markdown("""
+    <div style='display: flex; justify-content: center; align-items: center;'>
+""", unsafe_allow_html=True)
 
-with col2:
-    st_lottie(animation, speed=0.99, quality='high', height=150, width=150)
+st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
+
+st.markdown("</div>", unsafe_allow_html=True)
+
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
 st.markdown("""
