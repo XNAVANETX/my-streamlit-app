@@ -25,7 +25,7 @@ def load_lottieurl(url: str):
     return r.json()
 
 # ---------------------- Main UI ----------------------
-st.info("Welcome to Sniper Chatbot")
+st.error("Welcome to Sniper Chatbot")
 
 # Animation URL
 animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
