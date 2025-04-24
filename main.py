@@ -27,15 +27,24 @@ def load_lottieurl(url: str):
 # ---------------------- Main UI ----------------------
 st.info("Welcome to Sniper Chatbot")
 
-# Animation URL
 animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
 
-# Create a container with custom CSS for proper centering
-col1, col2, col3 = st.columns([1, 2, 1])
+# Inject CSS to center absolutely
+st.markdown("""
+    <style>
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 0vh;
+        }
+    </style>
+    <div class="center-container">
+""", unsafe_allow_html=True)
 
-with col2:
-    # This places the animation in the center column
-    st_lottie(animation, speed=0.99, quality='high', height=20, width=50)
+st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
