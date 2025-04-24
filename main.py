@@ -25,26 +25,11 @@ def load_lottieurl(url: str):
     return r.json()
 
 # ---------------------- Main UI ----------------------
-st.info("Welcome to Sniper Chatbot")
-
-import streamlit as st
-from streamlit_lottie import st_lottie
-import requests
-
-# Load Lottie animation
-def load_lottieurl(url: str):
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
-
-animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
-
-# Remove padding/margin globally
+# Clean layout styling
 st.markdown("""
     <style>
         .block-container {
-            padding-top: 0rem !important;
+            padding-top: 1rem !important;
             padding-bottom: 0rem !important;
         }
         .main {
@@ -52,13 +37,27 @@ st.markdown("""
         }
         footer {visibility: hidden;}
     </style>
-    <div style='text-align: center; margin-top: -20px;'>
 """, unsafe_allow_html=True)
 
-# Lottie animation
-st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
+# Layout: Lottie (left), Error message (right)
+col1, col2 = st.columns([1, 2])
 
-st.markdown("</div>", unsafe_allow_html=True)
+with col1:
+    st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
+
+with col2:
+    # Display the error message
+    st.error("Welcome to Sniper Chatbot")
+
+    st.markdown("""
+        <div style='margin-top: 10px;'>
+            <p style='font-size: 16px; line-height: 1.6;'>
+                Need help with IT solutions, product licenses, or cloud services? <br>
+                I'm here to assist you — just type your query below!
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
 
 
 # ---------------------- Custom Styling ----------------------
