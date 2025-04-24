@@ -4,3 +4,4 @@ requests
 google-api-python-client
 groq
 email-validator==2.1.0
+streamlit-lottie
