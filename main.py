@@ -44,7 +44,7 @@ st.markdown("""
 col1, col2 = st.columns([1, 2])
 
 with col1:
-    st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
+    st_lottie(animation, speed=0.99, quality='high', height=100, width=100)
 
 with col2:
     # Display the error message
