@@ -24,6 +24,9 @@ def load_lottieurl(url: str):
         return None
     return r.json()
 
+# Load your animation first
+animation = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_49rdyysj.json")  # Replace with your animation URL
+
 # ---------------------- Main UI ----------------------
 # Clean layout styling
 st.markdown("""
