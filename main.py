@@ -51,12 +51,7 @@ with col2:
     st.error("Welcome to Sniper Chatbot")
 
     st.markdown("""
-        <div style='margin-top: 10px;'>
-            <p style='font-size: 16px; line-height: 1.6;'>
-                Need help with IT solutions, product licenses, or cloud services? <br>
-                I'm here to assist you — just type your query below!
-            </p>
-        </div>
+        
     """, unsafe_allow_html=True)
 
 # ---------------------- Custom Styling ----------------------
