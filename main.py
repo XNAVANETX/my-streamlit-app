@@ -64,20 +64,6 @@ try:
                 st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
             else:
                 st.write("Animation could not be loaded")
-        
-        # Handle content in second column
-        with col2:
-            st.error("Welcome to Sniper Chatbot")
-    
-    except Exception as e:
-        # Fallback to non-column layout if columns fail
-        st.error(f"Welcome to Sniper Chatbot")
-        if animation:
-            st_lottie(animation, speed=0.99, quality='medium', height=150, width=150)
-
-except Exception as e:
-    st.error(f"Welcome to Sniper Chatbot")
-    st.write("Could not load animation")
 
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
