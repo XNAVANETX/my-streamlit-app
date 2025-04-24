@@ -35,7 +35,7 @@ col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
     # This places the animation in the center column
-    st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
+    st_lottie(animation, speed=0.99, quality='high', height=80, width=80)
 
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
@@ -261,7 +261,7 @@ if "pending_response" not in st.session_state:
 
 # ---------------------- Display Chat History ----------------------
 for message in st.session_state.chat_history:
-    with st.chat_message(message["role"], avatar='https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGZ2eTkwbXgwaTR6M3hoaTk2NXB2ZGl6aHE3cmp6N3J0NWJuMjhteCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7j1bU4kzX1gnkh6exC/giphy.gif' if message["role"] == "assistant" else "👨🏼‍💻"):
+    with st.chat_message(message["role"], avatar='https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json' if message["role"] == "assistant" else "👨🏼‍💻"):
         st.markdown(message["content"])
 
 # ---------------------- User Info Form ----------------------
@@ -320,7 +320,7 @@ if user_prompt:
             st.rerun()
         else:
             # User already submitted the form previously, just show the response
-            with st.chat_message("assistant", avatar='https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGZ2eTkwbXgwaTR6M3hoaTk2NXB2ZGl6aHE3cmp6N3J0NWJuMjhteCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7j1bU4kzX1gnkh6exC/giphy.gif'):
+            with st.chat_message("assistant", avatar='https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json'):
                 st.markdown(response)
                 st.session_state.chat_history.append({"role": "assistant", "content": response})
     else:
