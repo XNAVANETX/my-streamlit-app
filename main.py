@@ -24,10 +24,8 @@ def load_lottieurl(url: str):
         return None
     return r.json()
 
-# Load your animation first
-animation = load_lottieurl("https://assets5.lottiefiles.com/packages/lf20_49rdyysj.json")  # Replace with your animation URL
+animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
 
-# ---------------------- Main UI ----------------------
 # Clean layout styling
 st.markdown("""
     <style>
@@ -60,8 +58,6 @@ with col2:
             </p>
         </div>
     """, unsafe_allow_html=True)
-
-
 
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
