@@ -17,53 +17,25 @@ st.set_page_config(
     page_icon="💼",
     layout="centered",
 )
-
-# Load Lottie animation
+# Load Lottie animation from URL
 def load_lottieurl(url: str):
-    try:
-        r = requests.get(url)
-        if r.status_code != 200:
-            return None
-        return r.json()
-    except Exception as e:
-        st.error(f"Error loading animation: {e}")
+    r = requests.get(url)
+    if r.status_code != 200:
         return None
+    return r.json()
 
-# Custom CSS for layout
-st.markdown("""
-    <style>
-        .block-container {
-            padding-top: 1rem !important;
-            padding-bottom: 0rem !important;
-        }
-        .main {
-            padding-top: 0rem !important;
-        }
-        footer {visibility: hidden;}
-        
-        /* Add responsive design for iframe */
-        @media (max-width: 768px) {
-            .stColumns {
-                flex-direction: column;
-            }
-        }
-    </style>
-""", unsafe_allow_html=True)
+# Lottie animation URL
+animation_url = 'https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json'
+animation = load_lottieurl(animation_url)
 
-try:
-    # Load animation first to prevent errors
-    animation = load_lottieurl('https://lottie.host/2beb66cb-6095-45fe-9f80-155888df4164/2XziOiTtfH.json')
-    
-    # Create columns with error handling
-    try:
-        col1, col2 = st.columns([1, 2])
-        
-        # Handle animation in first column
-        with col1:
-            if animation:
-                st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
-            else:
-                st.write("Animation could not be loaded")
+# Display animation and chatbot welcome message side by side
+if animation:
+    col1, col2 = st.columns([1, 2])  # Adjust the ratio as needed
+
+    with col1:
+        st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
+ 
+
 
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
