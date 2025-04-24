@@ -41,7 +41,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Layout: Lottie (left), Error message (right)
-col1, col2 = st.columns([1, 2])
+col1, col2 = st.columns([2, 1])
 
 with col1:
     st_lottie(animation, speed=0.99, quality='high', height=100, width=100)
