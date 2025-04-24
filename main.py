@@ -35,7 +35,7 @@ col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
     # This places the animation in the center column
-    st_lottie(animation, speed=0.99, quality='high', height=80, width=80)
+    st_lottie(animation, speed=0.99, quality='high', height=20, width=50)
 
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
