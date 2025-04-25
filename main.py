@@ -17,6 +17,7 @@ st.set_page_config(
     page_icon="💼",
     layout="centered",
 )
+
 # Load Lottie animation from URL
 def load_lottieurl(url: str):
     r = requests.get(url)
@@ -32,11 +33,28 @@ animation = load_lottieurl(animation_url)
 if animation:
     col1, col2 = st.columns([1, 2])  # Adjust the ratio as needed
 
-    with col1:
-        st_lottie(animation, speed=0.99, quality='high', height=200, width=200)
- 
 
+with col1:
+    st.markdown(
+        f"""
+        <div style="padding: 0px;">
+            <div id="lottie-container"></div>
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
+    
+    # Use st_lottie with a target element ID
+    st_lottie(
+        animation, 
+        speed=0.99, 
+        quality='high', 
+        height=200, 
+        width=200,
+        key="lottie1"
+    )
 
+        
 # ---------------------- Custom Styling ----------------------
 # Hide Streamlit UI elements for cleaner interface
 st.markdown("""
@@ -65,8 +83,8 @@ st.markdown("""
     /* Remove main page padding to maximize chat space */
     .block-container {
         padding-top: 0rem;
-        padding-bottom: 0rem;
-        padding-left: 0rem;
+        padding-bottom: -1rem;
+        padding-left: -1rem;
         padding-right: 0rem;
     }
 
@@ -76,6 +94,7 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ---------------------- Load API Key ----------------------
 if os.path.exists(".env"):
@@ -107,6 +126,12 @@ Your job is to provide short, crisp, and directly relevant answers to user queri
 
 Sniper Systems & Solutions Pvt. Ltd., established in 2009 and headquartered in Chennai, is a leading IT solutions provider and authorized reseller for a wide array of global technology brands. The company offers end-to-end hardware, software, cloud services, and tailored industry solutions.
 
+TONE & INTERACTIVITY:
+- Maintain a professional tone, but be friendly and approachable.
+- Adjust formality slightly based on the user's tone.
+- Always end with a helpful follow-up (e.g., “Would you like to connect with our Sales Team?”).
+- Use short, interactive questions when suitable to guide user decisions (e.g., “Are you looking for hardware or software?”).
+- If the query is unclear, ask a polite follow-up question instead of assuming.
 
 COMPANY INFORMATION:
 - Founded in 2009, headquartered in Chennai with offices in Bangalore, Hyderabad and nationwide.
@@ -145,6 +170,28 @@ INDUSTRY SOLUTIONS:
 - AR | VR | XR: Looking to speed up your digital transformation? We've got you covered with immersive tech solutions in AR, VR, and XR.
 - Education & E-Learning: Create stunning 3D films, TV shows, animations, and games with our wide range of creative tools and post-production solutions.
 
+LATEST APPLE PRODUCTS INFORMATION (POST-2023):
+1. iPhone 16 Series (September 2024):
+   - iPhone 16 and 16 Plus: Equipped with the A18 chip, enhanced battery life, and improved camera capabilities
+   - iPhone 16 Pro and Pro Max: Advanced features including AI-enhanced Siri, 'visual intelligence' camera function, and 4K video recording
+   - iPhone 16e: Entry-level model priced $400 less than standard iPhone 16, with the same A18 chip and a 48MP camera
+
+2. AirPods 4 and AirPods Max 2 (September 2024):
+   - AirPods 4: Redesigned for better comfort with noise cancellation features
+   - AirPods Max 2: Enhanced audio performance and improved design
+
+3. Apple Watch Series 10 and Ultra 2 (September 2024):
+   - Apple Watch Series 10: Larger screens, faster charging, advanced health monitoring
+   - Apple Watch Ultra 2: New black titanium finish, enhanced durability and performance
+
+4. MacBook Air with M4 Chip (March 2025):
+   - Features the M4 chip for improved performance and energy efficiency
+   - Available in a new Sky Blue color option
+
+5. Mac Studio with M4 Ultra (March 2025):
+   - Features the M4 Ultra chip for significant power and performance improvements
+   - Suitable for intensive applications
+
 EDUCATIONAL INITIATIVES:
 - Sniper Academy: Offering specialized training in CAD, BIM, and other technical domains
 - CADCAMP: Annual knowledge-sharing and networking event for industry professionals
@@ -156,9 +203,10 @@ SUPPORT INFORMATION:
 - Website: https://sniperindia.com/
 
 IMPORTANT NOTE:
-- Do NOT provide pricing, quote estimates, or financial details. If users ask about pricing, politely direct them to contact the Sales Team at enquiry@sniperindia.com or call +91 8939301100.
+- Do NOT provide pricing, quote estimates, or financial details.
+- For pricing, direct users to enquiry@sniperindia.com or +91 8939301100.
 
-When assisting users, provide accurate information about Sniper's services, recommend appropriate solutions based on their needs, and offer to connect them with the relevant department for detailed inquiries. Be knowledgeable, professional, and helpful at all times.
+Always provide accurate information, recommend suitable services, and offer to connect the user to the appropriate team. Be knowledgeable, professional, and helpful at all times.
 """
 )
 
@@ -259,30 +307,20 @@ if "show_user_form" not in st.session_state:
 if "pending_response" not in st.session_state:
     st.session_state.pending_response = None
 
-# ---------------------- Display Chat History ----------------------
+
+# Display chat history
 for message in st.session_state.chat_history:
     with st.chat_message(message["role"], avatar='https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGZ2eTkwbXgwaTR6M3hoaTk2NXB2ZGl6aHE3cmp6N3J0NWJuMjhteCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/7j1bU4kzX1gnkh6exC/giphy.gif' if message["role"] == "assistant" else "👨🏼‍💻"):
         st.markdown(message["content"])
 
 # ---------------------- User Info Form ----------------------
 if st.session_state.show_user_form:
-    st.markdown("""
-    <div style="background-color: rgba(30, 41, 59, 0.85); 
-                padding: 20px; 
-                border-radius: 10px; 
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <h3 style="color: white; margin-bottom: 15px;">Let's get to know you better:</h3>
-    </div>
-    """, unsafe_allow_html=True)
-    
     with st.form("user_info_form"):
-        col1, col2 = st.columns(2)
-        with col1:
-            name = st.text_input("Your Name")
-            company = st.text_input("Company Name")
-        with col2:
-            phone = st.text_input("Phone Number")
-            email = st.text_input("Email Address")
+        st.subheader("Let's get to know you better:")
+        name = st.text_input("Your Name")
+        company = st.text_input("Company Name")
+        phone = st.text_input("Phone Number")
+        email = st.text_input("Email Address")
 
         submitted = st.form_submit_button("Submit")
 
