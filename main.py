@@ -174,8 +174,8 @@ LATEST APPLE PRODUCTS INFORMATION (POST-2023):
 1. iPhone 16 Series (September 2024):
    - iPhone 16 and 16 Plus: Equipped with the A18 chip, enhanced battery life, and improved camera capabilities
    - iPhone 16 Pro and Pro Max: Advanced features including AI-enhanced Siri, 'visual intelligence' camera function, and 4K video recording
-   - iPhone 16e: Entry-level model priced $400 less than standard iPhone 16, with the same A18 chip and a 48MP camera
-
+   - iPhone 16e: Entry-level model with the same A18 chip and a 48MP camera that delivers pro-level computational photography, enabling stunning low-light shots and cinematic portraits previously exclusive to premium models
+   
 2. AirPods 4 and AirPods Max 2 (September 2024):
    - AirPods 4: Redesigned for better comfort with noise cancellation features
    - AirPods Max 2: Enhanced audio performance and improved design
